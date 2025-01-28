@@ -40,7 +40,7 @@ class AgeGenderEstimator:
         model.to(device).eval()
         self.model = model
         self.device = device
-        print('from AgeGenderEstimator: weights loaded')
+        print('from AgeGenderEstimator: weights loaded ({})'.format(weight_path))
 
     def detect(self, faces):
         faces = faces.permute(0, 3, 1, 2)
