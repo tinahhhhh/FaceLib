@@ -29,8 +29,9 @@ class FaceDetector:
         if name == 'mobilenet':
             cfg = cfg_mnet
             model = RetinaFace(cfg=cfg, phase='test')
-            file_name = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'mobilenet.pth')
-            weight_path = os.path.join(os.path.dirname(file_name), 'weights/mobilenet.pth')
+            if weight_path is None:
+                file_name = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'mobilenet.pth')
+                weight_path = os.path.join(os.path.dirname(file_name), 'weights/mobilenet.pth')
             if os.path.isfile(weight_path) == False:
                 os.makedirs(os.path.split(weight_path)[0], exist_ok=True)
                 download_weight(link='https://drive.google.com/uc?export=download&id=15zP8BP-5IvWXWZoYTNdvUJUiBqZ1hxu1',
@@ -54,6 +55,7 @@ class FaceDetector:
              
         # settings for model
         model.load_state_dict(torch.load(weight_path, map_location=device))
+        print('from FaceDetector: weights loaded ({})'.format(weight_path))
         model.to(device).eval()
         self.model = model
         self.device = device
